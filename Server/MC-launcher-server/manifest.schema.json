@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/mylauncher/manifest-v1.schema.json",
+  "title": "MyLauncher pack manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifestVersion", "packId", "version", "name", "description", "authors", "categories", "minecraft", "java", "files", "settings"],
+  "properties": {
+    "manifestVersion": { "const": 1 },
+    "packId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$" },
+    "version": { "type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "description": { "type": "string", "maxLength": 4000 },
+    "authors": { "type": "array", "items": { "type": "string", "maxLength": 120 } },
+    "categories": { "type": "array", "items": { "type": "string", "maxLength": 120 } },
+    "iconUrl": { "type": ["string", "null"], "maxLength": 500 },
+    "minecraft": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "loader", "loaderVersion"],
+      "properties": {
+        "version": { "type": "string", "pattern": "^[A-Za-z0-9._+-]{1,64}$" },
+        "loader": { "enum": ["vanilla", "fabric", "forge", "neoforge"] },
+        "loaderVersion": { "type": ["string", "null"], "maxLength": 128 }
+      }
+    },
+    "java": { "type": "object", "additionalProperties": false, "required": ["major"], "properties": { "major": { "enum": [8, 11, 16, 17, 21, 25] } } },
+    "files": {
+      "type": "array", "maxItems": 100000,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "hash", "size", "url", "required"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1, "maxLength": 240, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!versions(?:/|$))(?!assets(?:/|$))(?!libraries(?:/|$))(?!\\.launcher_meta\\.json(?:\\.tmp|\\.backup)?(?:/|$))[A-Za-z0-9 _./+@()§-]+$" },
+          "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "size": { "type": "integer", "minimum": 0 },
+          "url": { "type": "string", "pattern": "^/api/files/sha256:[a-f0-9]{64}$" },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "settings": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "memoryMb": { "type": "integer", "minimum": 512, "maximum": 65536 },
+        "jvmArgs": { "type": "string", "maxLength": 2000 },
+        "windowWidth": { "type": "integer", "minimum": 640, "maximum": 7680 },
+        "windowHeight": { "type": "integer", "minimum": 480, "maximum": 4320 },
+        "fullscreen": { "type": "boolean" }
+      }
+    }
+  }
+}

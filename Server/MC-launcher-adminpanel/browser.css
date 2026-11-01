@@ -1,0 +1,6 @@
+.release-workspace { min-height: 80px; }
+.release-workspace .data-table { table-layout: auto; }
+.release-row:focus-visible { outline: 2px solid #89b966; outline-offset: -2px; }
+.activity-feed .activity-item:first-child .activity-marker { color: #4f7650; }
+.filter-search:focus-within { border-color: #9cb48e; box-shadow: 0 0 0 2px #8bab7620; }
+.subpage-heading > .button { flex: none; }

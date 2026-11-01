@@ -1,0 +1,73 @@
+API endpoints used by MyLauncher
+================================
+
+Microsoft account login
+-----------------------
+The app uses OAuth 2.0 Device Code Flow. Configure a public client in Microsoft
+Entra with personal Microsoft accounts and public-client flows enabled. No
+client secret is used.
+
+POST https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode
+	client_id=<public-client-id>
+	scope=XboxLive.signin offline_access
+
+POST https://login.microsoftonline.com/consumers/oauth2/v2.0/token
+	grant_type=urn:ietf:params:oauth:grant-type:device_code
+	client_id=<public-client-id>
+	device_code=<device-code>
+
+The refresh-token grant uses the same /token endpoint with grant_type,
+client_id, refresh_token, and scope fields. The resulting Microsoft access
+token is exchanged through Xbox Live, XSTS, and Minecraft Services:
+
+POST https://user.auth.xboxlive.com/user/authenticate
+POST https://xsts.auth.xboxlive.com/xsts/authorize
+POST https://api.minecraftservices.com/authentication/login_with_xbox
+GET  https://api.minecraftservices.com/minecraft/profile
+
+The refresh token is stored in Windows Credential Manager.
+
+Temurin Java runtime
+-------------------
+GET https://api.adoptium.net/v3/assets/latest/{java-major}/hotspot
+	?architecture=x64&image_type=jre&os=windows&vendor=eclipse
+
+The API response contains the package URL and SHA-256 checksum. The launcher
+downloads the archive over HTTPS, checks the checksum, and validates the
+extracted Java runtime before use.
+
+Modrinth
+--------
+Search:
+GET https://api.modrinth.com/v2/search
+	?query=<text>&facets=<JSON>&index=downloads|relevance&limit=20&offset=<n>
+
+Facets use project_type:<type>, versions:<minecraft-version>, and
+categories:<loader-or-category>. Values within one facet group are ORed;
+separate groups are ANDed.
+
+Project versions:
+GET https://api.modrinth.com/v2/project/{project-id}/version
+	?game_versions=["<minecraft-version>"]
+
+Downloads use the file URL and SHA-1 returned by the version response. The
+launcher only follows HTTPS redirects to its trusted host allowlist.
+
+Minecraft
+---------
+Version manifest:
+GET https://piston-meta.mojang.com/mc/game/version_manifest_v2.json
+
+Version metadata and artifact URLs are read from the manifest. The launcher
+downloads the client, libraries, assets, and native archives from the URLs in
+that metadata and verifies available SHA-1 values.
+
+Loader metadata
+---------------
+Fabric:   https://meta.fabricmc.net/v2/versions/loader
+Forge:    https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+NeoForge: https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge
+
+The launcher resolves loader installers and profile metadata from the
+corresponding public APIs and Maven repositories.
+

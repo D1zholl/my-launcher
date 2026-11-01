@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101d19" />
+    <meta name="description" content="Панель управления сборками Minecraft" />
+    <title>Сборки — мастерская</title>
+    <link rel="icon" href="/icons.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/theme.css" />
+    <link rel="stylesheet" href="/browser.css" />
+    <link rel="stylesheet" href="/pack.css" />
+    <link rel="stylesheet" href="/upload.css" />
+  </head>
+  <body>
+    <div id="login-view" class="login-view" hidden>
+      <div class="login-art" aria-hidden="true"><span class="login-mark">M<span>.</span></span><div class="login-grid"></div><p>СОБИРАЙТЕ<br />СВОИ МИРЫ</p><span class="login-edition">BUILD REPOSITORY · 01</span></div>
+      <form id="login-form" class="login-form">
+        <span class="eyebrow">МАСТЕРСКАЯ СБОРОК</span>
+        <h1>С возвращением.</h1>
+        <p>Войдите, чтобы управлять сборками и релизами.</p>
+        <label for="login-password">Пароль администратора</label>
+        <div class="password-field"><input id="login-password" name="password" type="password" autocomplete="current-password" required /><button class="icon-button password-toggle" type="button" aria-label="Показать пароль" title="Показать пароль"><svg><use href="/icons.svg#icon-eye"></use></svg></button></div>
+        <button class="button button-primary login-submit" type="submit"><span>Войти в мастерскую</span><svg><use href="/icons.svg#icon-arrow"></use></svg></button>
+        <div id="login-error" class="form-error" role="alert"></div>
+        <span class="login-foot">Защищённое соединение · Сессия на 8 часов</span>
+      </form>
+    </div>
+
+    <div id="app" class="app-shell" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="#overview" aria-label="Мастерская сборок">
+          <span class="brand-mark">M<span>.</span></span><span class="brand-copy"><strong>Мастерская</strong><small>BUILD REPOSITORY</small></span>
+        </a>
+        <div class="side-label">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+        <nav class="primary-nav" aria-label="Основная навигация">
+          <button class="nav-link is-active" data-view="overview"><svg><use href="/icons.svg#icon-grid"></use></svg><span>Обзор</span><kbd>01</kbd></button>
+          <button class="nav-link" data-view="releases"><svg><use href="/icons.svg#icon-box"></use></svg><span>Сборки и версии</span><kbd>02</kbd></button>
+          <button class="nav-link" data-view="activity"><svg><use href="/icons.svg#icon-activity"></use></svg><span>Журнал действий</span><kbd>03</kbd></button>
+        </nav>
+        <div class="side-bottom">
+          <div class="side-status"><span class="status-pulse"></span><span>Репозиторий активен</span><button class="icon-button" id="refresh-button" aria-label="Обновить данные" title="Обновить"><svg><use href="/icons.svg#icon-refresh"></use></svg></button></div>
+          <div class="profile"><span class="profile-avatar">А</span><span class="profile-copy"><strong>Администратор</strong><small>Полный доступ</small></span><button class="icon-button" id="logout-button" aria-label="Выйти" title="Выйти"><svg><use href="/icons.svg#icon-logout"></use></svg></button></div>
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar"><div class="breadcrumbs"><span>Репозиторий</span><svg><use href="/icons.svg#icon-chevron"></use></svg><strong id="breadcrumb-current">Обзор</strong></div><div class="topbar-actions"><span class="today-label" id="today-label"></span><span class="topbar-divider"></span><button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="Включить тёмную тему" title="Включить тёмную тему" aria-pressed="false"><svg><use href="/icons.svg#icon-moon"></use></svg></button><button class="button button-primary button-small" id="new-release-button"><svg><use href="/icons.svg#icon-plus"></use></svg><span>Новая сборка</span></button></div></header>
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+        <section id="overview-view" class="view-section">
+          <div class="page-heading"><div><span class="eyebrow">ВАША КОЛЛЕКЦИЯ</span><h1>Сборки, <em>которые</em><br class="desktop-break" /> хочется запускать.</h1><p class="heading-description">Управляйте версиями, файлами и публикацией из одного места.</p></div><div class="heading-art" aria-hidden="true"><span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span><span class="art-asterisk">✳</span><span class="art-number">01</span></div></div>
+          <div class="metrics-grid">
+            <article class="metric metric-dark"><span class="metric-label">ВСЕГО СБОРКИ</span><div class="metric-value" id="metric-packs">—</div><div class="metric-foot"><span class="metric-mark mark-mint">↗</span><span>В вашей мастерской</span></div><svg class="metric-icon"><use href="/icons.svg#icon-box"></use></svg></article>
+            <article class="metric"><span class="metric-label">ОПУБЛИКОВАНО</span><div class="metric-value" id="metric-published">—</div><div class="metric-foot"><span class="metric-mark mark-green">●</span><span>Доступны игрокам</span></div><svg class="metric-icon"><use href="/icons.svg#icon-globe"></use></svg></article>
+            <article class="metric"><span class="metric-label">ЧЕРНОВИКИ</span><div class="metric-value" id="metric-drafts">—</div><div class="metric-foot"><span class="metric-mark mark-coral">●</span><span>Ждут проверки</span></div><svg class="metric-icon"><use href="/icons.svg#icon-edit"></use></svg></article>
+            <article class="metric metric-storage"><span class="metric-label">УНИКАЛЬНЫЕ ЗАГРУЗКИ</span><div class="metric-value" id="metric-downloads">—</div><div class="metric-foot"><span class="metric-mark mark-blue">↗</span><span>Всего скачиваний файлов</span></div><svg class="metric-icon"><use href="/icons.svg#icon-download"></use></svg></article>
+          </div>
+          <section class="content-section"><div class="section-heading"><div><span class="eyebrow">ПОСЛЕДНИЕ ИЗМЕНЕНИЯ</span><h2>Сборки и версии</h2></div><button class="text-button" data-view="releases">Все версии <svg><use href="/icons.svg#icon-arrow"></use></svg></button></div><div class="table-shell"><div class="release-workspace"><table class="data-table"><thead><tr><th>СБОРКА / ВЕРСИЯ</th><th>MINECRAFT</th><th>КАНАЛ</th><th>СТАТУС</th><th>ГОТОВНОСТЬ</th><th></th></tr></thead><tbody id="recent-releases"></tbody></table><div id="empty-releases" class="empty-state" hidden><span class="empty-glyph">✳</span><h3>Пока здесь тихо</h3><p>Создайте первую сборку и добавьте к ней версию.</p><button class="button button-primary" data-action="new-release"><svg><use href="/icons.svg#icon-plus"></use></svg>Создать сборку</button></div><div id="loading-releases" class="loading-state"><span class="spinner"></span>Загружаем данные…</div></div></div></section>
+          <section class="content-section activity-section"><div class="section-heading"><div><span class="eyebrow">ИСТОРИЯ</span><h2>Недавние действия</h2></div><button class="text-button" data-view="activity">Открыть журнал <svg><use href="/icons.svg#icon-arrow"></use></svg></button></div><div id="recent-activity" class="activity-list"></div></section>
+        </section>
+
+        <section id="releases-view" class="view-section" hidden><div class="subpage-heading"><div><span class="eyebrow">КАТАЛОГ</span><h1>Сборки и версии</h1><p>Черновики, опубликованные релизы и готовность к выпуску.</p></div><button class="button button-primary" data-action="new-release"><svg><use href="/icons.svg#icon-plus"></use></svg>Новая сборка</button></div><div class="filter-bar"><div class="filter-search"><svg><use href="/icons.svg#icon-search"></use></svg><input id="release-search" type="search" placeholder="Найти сборку или версию" aria-label="Найти сборку или версию" /></div><div class="filter-tabs"><button class="filter-tab is-selected" data-filter="all">Все <span id="filter-count-all">0</span></button><button class="filter-tab" data-filter="draft">Черновики <span id="filter-count-draft">0</span></button><button class="filter-tab" data-filter="published">Опубликованы <span id="filter-count-published">0</span></button></div></div><div class="table-shell"><div class="release-workspace"><table class="data-table"><thead><tr><th>СБОРКА / ВЕРСИЯ</th><th>MINECRAFT</th><th>КАНАЛ</th><th>СТАТУС</th><th>ГОТОВНОСТЬ</th><th></th></tr></thead><tbody id="all-releases"></tbody></table><div id="empty-all-releases" class="empty-state" hidden><span class="empty-glyph">✳</span><h3>Ничего не найдено</h3><p>Попробуйте изменить запрос или фильтр.</p></div></div></div></section>
+
+        <section id="activity-view" class="view-section" hidden><div class="subpage-heading"><div><span class="eyebrow">ПРОЗРАЧНОСТЬ</span><h1>Журнал действий</h1><p>Недавние события в административной панели.</p></div></div><div id="activity-feed" class="activity-feed"></div></section>
+        <footer class="app-footer"><span>MYLAUNCHER BUILD REPOSITORY</span><span>Сборки создаются с заботой <span class="footer-star">✳</span></span></footer>
+      </main>
+    </div>
+
+    <dialog id="release-dialog" class="dialog release-dialog"><form id="release-form" method="dialog" novalidate><div class="dialog-header"><div><span class="eyebrow">НОВАЯ ВЕРСИЯ</span><h2>Создать сборку</h2><p>Настройте сборку и подготовьте первый релиз.</p></div><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Закрыть"><svg><use href="/icons.svg#icon-close"></use></svg></button></div><div class="dialog-body">
+      <section class="form-section"><div class="form-section-heading"><span class="step-index">01</span><div><h3>Основное</h3><p>Выберите существующую сборку или создайте новую.</p></div></div><label class="field-label" for="pack-choice">Сборка</label><select id="pack-choice" name="packChoice" required></select><div id="new-pack-fields" class="new-pack-fields"><div class="form-grid"><label class="field"><span>Название сборки</span><input id="pack-name" maxlength="120" placeholder="Например, Затерянное королевство" required /></label><label class="field"><span>Идентификатор</span><input id="pack-id" maxlength="64" placeholder="lost-kingdom" required /></label></div><label class="field"><span>Описание</span><textarea id="pack-description" rows="3" maxlength="4000" placeholder="Что ждёт игроков в этом мире?"></textarea></label><div class="form-grid"><label class="field"><span>Авторы</span><input id="pack-authors" placeholder="Имя или команда" /></label><label class="field"><span>Категории</span><input id="pack-categories" placeholder="приключения, магия" /></label></div></div></section>
+      <section class="form-section"><div class="form-section-heading"><span class="step-index">02</span><div><h3>Версия игры</h3><p>Укажите Minecraft, загрузчик и канал распространения.</p></div></div><div class="form-grid"><label class="field"><span>Версия Minecraft</span><select id="game-version" name="gameVersion" required></select></label><label class="field"><span>Версия сборки</span><input id="release-version" name="version" required value="1.0.0" maxlength="64" /><small>Формат MAJOR.MINOR.PATCH</small></label><label class="field"><span>Загрузчик</span><select id="loader" name="loader"><option value="fabric">Fabric</option><option value="neoforge">NeoForge</option><option value="forge">Forge</option><option value="vanilla">Vanilla</option></select></label><label class="field" id="loader-version-field"><span>Версия загрузчика</span><input id="loader-version" name="loaderVersion" placeholder="Например, 0.16.9" maxlength="128" /><small id="loader-hint">Для Vanilla оставьте поле пустым.</small></label><label class="field"><span>Версия Java</span><select id="java-major" name="javaMajor"><option value="8">Java 8</option><option value="11">Java 11</option><option value="16">Java 16</option><option value="17">Java 17</option><option value="21" selected>Java 21</option><option value="25">Java 25</option></select><small id="java-hint">Определим по официальным метаданным.</small></label><label class="field"><span>Канал релиза</span><select id="release-channel" name="channel"><option value="stable">Stable · стабильный</option><option value="beta">Beta · предварительный</option></select></label></div></section>
+      <section class="form-section"><div class="form-section-heading"><span class="step-index">03</span><div><h3>Файлы сборки</h3><p>Загружайте отдельные файлы или папку с подпапками.</p></div></div><label class="field upload-folder-field"><span>Папка назначения</span><select id="upload-folder" name="uploadFolder"><option value="mods" selected>mods</option><option value="">Корень версии</option><option value="config">config</option><option value="resourcepacks">resourcepacks</option><option value="shaderpacks">shaderpacks</option><option value="datapacks">datapacks</option></select></label><label class="upload-destination" id="upload-destination" for="release-files"><input id="release-files" type="file" multiple /><span class="upload-icon"><svg><use href="/icons.svg#icon-upload"></use></svg></span><span class="upload-copy"><strong>Перетащите файлы сюда</strong><span>или нажмите, чтобы выбрать на устройстве</span><small>JAR, ZIP, конфигурации и ресурспаки</small></span><span class="upload-action">Выбрать файлы <svg><use href="/icons.svg#icon-arrow"></use></svg></span></label><div id="file-queue" class="file-queue" hidden></div></section>
+      <section class="form-section settings-section"><div class="form-section-heading"><span class="step-index">04</span><div><h3>Настройки игры</h3><p>Начальные параметры для новых игроков.</p></div></div><div class="form-grid"><label class="field"><span>Оперативная память, МБ</span><input id="memory-mb" type="number" min="512" max="65536" step="512" value="4096" /></label><label class="field"><span>Разрешение окна</span><div class="resolution-inputs"><input id="window-width" type="number" min="640" max="7680" value="1280" aria-label="Ширина окна" /><span>×</span><input id="window-height" type="number" min="480" max="4320" value="720" aria-label="Высота окна" /></div></label></div><label class="switch-field"><input id="fullscreen" type="checkbox" /><span class="switch-track"></span><span><strong>Полноэкранный режим</strong><small>Запускать игру на весь экран</small></span></label></section>
+    </div><div class="dialog-footer"><span class="dialog-note"><svg><use href="/icons.svg#icon-shield"></use></svg>Сначала создаётся черновик. Публикация после проверки.</span><div class="dialog-actions"><button class="button button-quiet" type="button" data-close-dialog>Отмена</button><button id="create-release-submit" class="button button-primary" type="submit"><span>Создать черновик</span><svg><use href="/icons.svg#icon-arrow"></use></svg></button></div></div></form></dialog>
+
+    <dialog id="detail-dialog" class="dialog detail-dialog"><div id="detail-content"></div></dialog>
+    <dialog id="confirm-dialog" class="dialog confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+      <div class="confirm-content"><span class="confirm-icon"><svg><use href="/icons.svg#icon-alert"></use></svg></span><div><span id="confirm-eyebrow" class="eyebrow">ПОДТВЕРЖДЕНИЕ</span><h2 id="confirm-title">Продолжить действие?</h2><p id="confirm-message"></p></div></div>
+      <div class="confirm-actions"><button id="confirm-cancel" class="button button-quiet" type="button">Отмена</button><button id="confirm-accept" class="button button-primary" type="button">Продолжить</button></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

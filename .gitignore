@@ -1,0 +1,52 @@
+# Node/Vite/React
+**/node_modules/
+**/dist/
+**/.env
+**/.env.*
+!**/.env.example
+Client/MC-launcher/node_modules/
+Client/MC-launcher/dist/
+Client/MC-launcher/.env
+Client/MC-launcher/.DS_Store
+Client/MC-launcher/.vscode/
+Client/MC-launcher/.eslintcache
+Client/MC-launcher/.turbo/
+Client/MC-launcher/npm-debug.log*
+
+# Rust/Tauri
+**/target/
+**/target-*/
+Client/MC-launcher/src-tauri/.DS_Store
+Client/MC-launcher/src-tauri/.vscode/
+
+# Python
+Server/MC-launcher-server/__pycache__/
+Server/MC-launcher-server/*.pyc
+Server/MC-launcher-server/.DS_Store
+Server/MC-launcher-server/.vscode/
+Server/MC-launcher-server/data/
+
+# General
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.old
+*.orig
+*.rej
+*.sublime-workspace
+*.sublime-project
+*.idea/
+*.iml
+*.vs/
+*.env
+*.venv
+*.coverage
+*.egg-info/
+*.pytest_cache/
+
+# Backup files
+*~

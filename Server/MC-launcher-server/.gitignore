@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+data/
+backups/
+*.tmp
+server_config.json
